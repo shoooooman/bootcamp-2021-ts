@@ -1,16 +1,40 @@
-type TextItem = {
+type InputTextItem = {
   name: string;
   tagName: "input";
-  type: "text" | "email" | "tel";
+  type: "text";
   label: string;
   placeholder: string;
 }
 
-type RadioOrCheckboxItem = {
+type InputEmailItem = {
+  name: string;
+  tagName: "input";
+  type: "email";
+  label: string;
+  placeholder: string;
+}
+
+type InputTelItem = {
+  name: string;
+  tagName: "input";
+  type: "tel";
+  label: string;
+  placeholder: string;
+}
+
+type InputRadioItem = {
   name: string;
   label: string;
   tagName: "input";
-  type: "radio" | "checkbox";
+  type: "radio";
+  values: { label: string; value: number }[];
+}
+
+type InputCheckboxItem = {
+  name: string;
+  label: string;
+  tagName: "input";
+  type: "checkbox";
   values: { label: string; value: number }[];
 }
 
@@ -29,8 +53,11 @@ type TextAreaItem = {
 }
 
 type Item =
-  TextItem |
-  RadioOrCheckboxItem |
+  InputTextItem |
+  InputEmailItem |
+  InputTelItem |
+  InputRadioItem |
+  InputCheckboxItem |
   SelectItem |
   TextAreaItem;
 
@@ -106,7 +133,7 @@ const items: Item[] = [
 // _____________________________________________________________________________
 //
 
-function createTextInput(type: string, placeholder: string) {
+function createInput(type: string, placeholder: string) {
   switch (type) {
     case "text": case "email": case "tel":
       return `
@@ -127,23 +154,40 @@ function createRadioOrCheckbox(type: string, values: {label: string, value: numb
   return row;
 }
 
-function createInputRow(item: TextItem | RadioOrCheckboxItem) {
-  let row = ""
-  switch (item.type) {
-    case "text": case "email": case "tel":
-      row += createTextInput(item.type, item.placeholder)
-      break;
-    case "radio": case "checkbox":
-      row += createRadioOrCheckbox(item.type, item.values)
-      break;
-  }
+function createInputRow(item: InputTextItem | InputEmailItem | InputTelItem) {
   return `
     <tr>
       <th>
         ${item.label}
       </th>
       <td>
-        ${row}
+        ${createInput(item.type, item.placeholder)}
+      </td>
+    </tr>
+  `;
+}
+
+function createRadioRow(item: InputRadioItem) {
+  return `
+    <tr>
+      <th>
+        ${item.label}
+      </th>
+      <td>
+        ${createRadioOrCheckbox(item.type, item.values)}
+      </td>
+    </tr>
+  `;
+}
+
+function createCheckboxRow(item: InputCheckboxItem) {
+  return `
+    <tr>
+      <th>
+        ${item.label}
+      </th>
+      <td>
+        ${createRadioOrCheckbox(item.type, item.values)}
       </td>
     </tr>
   `;
@@ -192,6 +236,11 @@ function createTable() {
     .map((item) => {
       switch (item.tagName) {
         case "input":
+          if (item.type === "radio") {
+            return createRadioRow(item);
+          } else if (item.type === "checkbox") {
+            return createCheckboxRow(item);
+          }
           return createInputRow(item)
         case "select":
           return createSelectRow(item);
