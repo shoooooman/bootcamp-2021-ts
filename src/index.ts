@@ -133,28 +133,11 @@ const items: Item[] = [
 // _____________________________________________________________________________
 //
 
-function createInput(type: string, placeholder: string) {
-  switch (type) {
-    case "text": case "email": case "tel":
-      return `
-        <input type=${type}" placeholder=${placeholder} >
-      `
-    default:
-      return "";
-  }
+function createInput(type: "text" | "email" | "tel", placeholder: string): string {
+  return `<input type=${type}" placeholder=${placeholder} >`;
 }
 
-function createRadioOrCheckbox(type: string, values: {label: string, value: number}[]) {
-  let row = "";
-  values.forEach(value => {
-    row += `
-        <input type="${type}" value=${value.value} >${value.label}
-      `
-  });
-  return row;
-}
-
-function createInputRow(item: InputTextItem | InputEmailItem | InputTelItem) {
+function createInputRow(item: InputTextItem | InputEmailItem | InputTelItem): string {
   return `
     <tr>
       <th>
@@ -167,7 +150,14 @@ function createInputRow(item: InputTextItem | InputEmailItem | InputTelItem) {
   `;
 }
 
-function createRadioRow(item: InputRadioItem) {
+function createRadioOrCheckbox(type: "radio" | "checkbox", values: {label: string, value: number}[]): string {
+  return values
+    .map(value => {
+      return `<input type="${type}" value=${value.value} >${value.label}`;
+    }).join("");
+}
+
+function createRadioRow(item: InputRadioItem): string {
   return `
     <tr>
       <th>
@@ -180,7 +170,7 @@ function createRadioRow(item: InputRadioItem) {
   `;
 }
 
-function createCheckboxRow(item: InputCheckboxItem) {
+function createCheckboxRow(item: InputCheckboxItem): string {
   return `
     <tr>
       <th>
@@ -193,17 +183,14 @@ function createCheckboxRow(item: InputCheckboxItem) {
   `;
 }
 
-function createSelectOptions(options: {text: string, value: number}[]) {
-  let str = "";
-  options.forEach(option => {
-    str += `
-    <option value="${option.value}">${option.text}</option>
-  `
-  });
-  return str;
+function createSelectOptions(options: {text: string, value: number}[]): string {
+  return options
+    .map(option => {
+      return `<option value="${option.value}">${option.text}</option>`;
+    }).join("");
 }
 
-function createSelectRow(item: SelectItem) {
+function createSelectRow(item: SelectItem): string {
   return `
     <tr>
       <th>
@@ -218,7 +205,7 @@ function createSelectRow(item: SelectItem) {
   `;
 }
 
-function createTextAreaRow(item: TextAreaItem) {
+function createTextAreaRow(item: TextAreaItem): string {
   return `
     <tr>
       <th>
