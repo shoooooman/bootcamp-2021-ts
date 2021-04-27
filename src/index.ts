@@ -1,56 +1,47 @@
-type InputTextItem = {
+type Base = {
   name: string;
+  label: string;
+};
+
+type InputTextItem = Base & {
   tagName: "input";
   type: "text";
-  label: string;
   placeholder: string;
-}
+};
 
-type InputEmailItem = {
-  name: string;
+type InputEmailItem = Base & {
   tagName: "input";
   type: "email";
-  label: string;
   placeholder: string;
-}
+};
 
-type InputTelItem = {
-  name: string;
+type InputTelItem = Base & {
   tagName: "input";
   type: "tel";
-  label: string;
   placeholder: string;
-}
+};
 
-type InputRadioItem = {
-  name: string;
-  label: string;
+type InputRadioItem = Base & {
   tagName: "input";
   type: "radio";
   values: { label: string; value: number }[];
-}
+};
 
-type InputCheckboxItem = {
-  name: string;
-  label: string;
+type InputCheckboxItem = Base & {
   tagName: "input";
   type: "checkbox";
   values: { label: string; value: number }[];
-}
+};
 
-type SelectItem = {
-  name: string;
-  label: string;
+type SelectItem = Base & {
   tagName: "select";
   options: { text: string, value: number }[];
-}
+};
 
-type TextAreaItem = {
-  name: string;
-  label: string;
+type TextAreaItem = Base & {
   tagName: "textarea";
   placeholder: string;
-}
+};
 
 type Item =
   InputTextItem |
