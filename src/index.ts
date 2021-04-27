@@ -141,11 +141,11 @@ function createRadioOrCheckbox(type: "radio" | "checkbox", name: string, values:
   return values
     .map(({ value, label }) => {
       return `
-            <span class="radioItem">
-              <input type="${type}" id="${name}${value}" name="${name}" value="${value}" >
-              <label for="${name}${value}">${label}</label>
-            </span>
-          `;
+        <span class="radioItem">
+          <input type="${type}" id="${name}${value}" name="${name}" value="${value}" >
+          <label for="${name}${value}">${label}</label>
+        </span>
+      `;
     })
     .join("");
 }
@@ -207,7 +207,7 @@ function createTable() {
           if (item.type === "radio" || item.type === "checkbox") {
             return createRadioCheckboxRow(item);
           }
-          return createInputRow(item)
+          return createInputRow(item);
         case "select":
           return createSelectRow(item);
         case "textarea":
